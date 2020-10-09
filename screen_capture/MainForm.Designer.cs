@@ -63,7 +63,7 @@ namespace screen_capture
         	this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
         	this.groupBox1.Name = "groupBox1";
         	this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-        	this.groupBox1.Size = new System.Drawing.Size(600, 80);
+        	this.groupBox1.Size = new System.Drawing.Size(593, 80);
         	this.groupBox1.TabIndex = 1;
         	this.groupBox1.TabStop = false;
         	this.groupBox1.Text = "Image";
@@ -79,7 +79,6 @@ namespace screen_capture
         	this.radioButton5.Text = "Open In &Explorer";
         	this.radioButton5.UseVisualStyleBackColor = false;
         	this.radioButton5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.radioButton5_KeyPress);
-        	this.radioButton5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RadioButton5MouseDown);
         	// 
         	// radioButton1
         	// 
@@ -94,7 +93,6 @@ namespace screen_capture
         	this.radioButton1.Text = "&Copy to Clipboard";
         	this.radioButton1.UseVisualStyleBackColor = false;
         	this.radioButton1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RadioButton1KeyPress);
-        	this.radioButton1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RadioButton1MouseDown);
         	// 
         	// radioButton2
         	// 
@@ -107,7 +105,6 @@ namespace screen_capture
         	this.radioButton2.Text = "&Save to file";
         	this.radioButton2.UseVisualStyleBackColor = false;
         	this.radioButton2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RadioButton2KeyPress);
-        	this.radioButton2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RadioButton2MouseDown);
         	// 
         	// MainForm
         	// 
@@ -124,7 +121,6 @@ namespace screen_capture
         	this.Name = "MainForm";
         	this.Opacity = 0.5D;
         	this.ShowIcon = false;
-        	this.ShowInTaskbar = false;
         	this.Text = "ScreenCapture";
         	this.TransparencyKey = System.Drawing.Color.White;
         	this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

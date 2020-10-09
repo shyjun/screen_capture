@@ -17,6 +17,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Web;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace screen_capture
 {
@@ -41,14 +42,64 @@ namespace screen_capture
 		int fx,fy,width,height;
 		bool started=false;
 		System.Drawing.Point startpoint = new System.Drawing.Point();
-
 		Pen MyPen = new Pen(Color.Black, 1);
+		Bitmap bitmap;
+		Graphics g;
+
+
+		void refresh_disp()
+		{
+			this.Refresh();
+		}
+		
+		private void DrawSelection(int cx,int cy)
+		{
+			this.Cursor = Cursors.Cross;
+			bool flag=false;
+			if(cx>startpoint.X)
+			{
+				fx=startpoint.X;
+				width=cx-fx;
+			}
+			else
+			{
+				fx=cx;
+				width=startpoint.X-fx;
+			}
+
+			if(cy>startpoint.Y)
+			{
+				fy=startpoint.Y;
+				height=cy-fy;
+			}
+			else
+			{
+				flag=true;
+				fy=startpoint.Y;
+				height=fy-cy;
+			}
+			refresh_disp();
+			if(flag==true)
+			{
+				fx=startpoint.X;
+				fy=cy;
+				if(cx<startpoint.X)
+				{
+					fx=cx;
+				}
+			}
+			System.Drawing.Rectangle bx = new Rectangle(fx,fy,width,height);
+			Graphics drawRect = this.CreateGraphics();
+			drawRect.DrawRectangle(MyPen,bx);
+		}
+
 
 		void public_key_press(System.Windows.Forms.KeyPressEventArgs e)
 		{
 			if(e.KeyChar == 27)
 				this.Close();
 		}
+		
 		void MainFormKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
 		{
 			public_key_press(e);
@@ -64,9 +115,12 @@ namespace screen_capture
 
 		void MainFormMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
+
 			if(started==true)
 			{
 				DrawSelection(e.X,e.Y);
+
+				// remove yellow shade
 				this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
 			}
 		}
@@ -74,13 +128,11 @@ namespace screen_capture
 		void MainFormMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			started = false;
+			refresh_disp();
 			mainProc();
 			this.Close();
 		}
-
-		Bitmap bitmap;
-		Graphics g;
-		//string TEMPFILENAME="D:\\111.jpg";
+		
 		string TEMPFILENAME = System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile) + "\\111.jpg";
 
 		void editWithMsPaint(string FilePath)
@@ -89,7 +141,6 @@ namespace screen_capture
 			edit.StartInfo.Arguments = "\"" + FilePath.ToString() + "\"";
 			edit.StartInfo.FileName = "mspaint.exe";
 			edit.Start();
-			//edit.WaitForExit();
 		}
 
 		void showInExplorer(string FilePath)
@@ -132,19 +183,77 @@ namespace screen_capture
 
 		}
 
+		[DllImport("gdi32.dll")]
+		static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+
+		[DllImport("user32.dll")]
+		static extern IntPtr GetDC(IntPtr hWnd);
+
+		[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+		public static extern IntPtr GetDesktopWindow();
+
+		private enum DeviceCap
+		{
+			DESKTOPVERTRES = 117,
+			DESKTOPHORZRES = 118
+		};
+
+		public static float GetWindowsScaling()
+		{
+
+			IntPtr DesktopHwnd = GetDesktopWindow();
+			Graphics DesktopGr = Graphics.FromHwnd(DesktopHwnd);
+
+			IntPtr DesktopHdc = DesktopGr.GetHdc();
+			int XRes = GetDeviceCaps(DesktopHdc, (int)DeviceCap.DESKTOPHORZRES);
+			int YRes = GetDeviceCaps(DesktopHdc, (int)DeviceCap.DESKTOPVERTRES);
+
+			//MessageBox.Show("res="+XRes.ToString()+","+YRes.ToString());
+			//MessageBox.Show("screen="+Screen.PrimaryScreen.Bounds.Width.ToString()+","+Screen.PrimaryScreen.Bounds.Height.ToString());
+
+			float Xscale;
+			float Yscale;
+			Xscale = (float)((float)XRes / (float)Screen.PrimaryScreen.Bounds.Width);
+			Yscale = (float)((float)YRes / (float)Screen.PrimaryScreen.Bounds.Height);
+			
+			if(Xscale == Yscale)
+			{
+				//MessageBox.Show("scale same");
+			}
+			else
+			{
+				MessageBox.Show("scale different");
+			}
+			
+			//MessageBox.Show("scale="+Xscale.ToString()+","+Yscale.ToString());
+			return Xscale;
+		}
+
+		
 
 		public void mainProc()
 		{
 			string fName;
 			FileInfo fInfo;
 
+			float DispScale = GetWindowsScaling();
+			//MessageBox.Show(""+DispScale.ToString());
+			
 			Point StartPoint = new Point(fx,fy);
 			Rectangle bounds = new Rectangle(fx,fy,width,height);
-
+			
+			bounds.X = Convert.ToInt32(bounds.X * DispScale);
+			bounds.Y = Convert.ToInt32(bounds.Y * DispScale);
+			bounds.Width = Convert.ToInt32(bounds.Width * DispScale);
+			bounds.Height = Convert.ToInt32(bounds.Height * DispScale);
+			
+			StartPoint.X = Convert.ToInt32(StartPoint.X * DispScale);
+			StartPoint.Y = Convert.ToInt32(StartPoint.Y * DispScale);
+			
 			bitmap = new Bitmap(bounds.Width, bounds.Height);
 			g = Graphics.FromImage(bitmap);
 			g.CopyFromScreen(StartPoint, Point.Empty, bounds.Size);
-
+			
 			if(radioButton1.Checked == true)  // copy to clipboard and exit
 			{
 				Clipboard.Clear();
@@ -193,54 +302,15 @@ namespace screen_capture
 				{
 					editWithMsPaint(fName);
 				}
+
 			}
-			
+
 			if (radioButton5.Checked == true) // open in explorer
 			{
 				showInExplorer(fName);
 			}
 		}
 
-		private void DrawSelection(int cx,int cy)
-		{
-			this.Cursor = Cursors.Cross;
-			bool flag=false;
-			if(cx>startpoint.X)
-			{
-				fx=startpoint.X;
-				width=cx-fx;
-			}
-			else
-			{
-				fx=cx;
-				width=startpoint.X-fx;
-			}
-
-			if(cy>startpoint.Y)
-			{
-				fy=startpoint.Y;
-				height=cy-fy;
-			}
-			else
-			{
-				flag=true;
-				fy=startpoint.Y;
-				height=fy-cy;
-			}
-			this.Refresh();
-			if(flag==true)
-			{
-				fx=startpoint.X;
-				fy=cy;
-				if(cx<startpoint.X)
-				{
-					fx=cx;
-				}
-			}
-			System.Drawing.Rectangle bx = new Rectangle(fx,fy,width,height);
-			Graphics drawRect = this.CreateGraphics();
-			drawRect.DrawRectangle(MyPen,bx);
-		}
 
 		void RadioButton2KeyPress(object sender, KeyPressEventArgs e)
 		{
@@ -251,29 +321,12 @@ namespace screen_capture
 		{
 			public_key_press(e);
 		}
+
 		
 		private void radioButton5_KeyPress(object sender, KeyPressEventArgs e)
 		{
 			public_key_press(e);
 		}
-
 		
-		
-		
-		void RadioButton1MouseDown(object sender, MouseEventArgs e)
-		{
-			
-
-		}
-		
-		void RadioButton5MouseDown(object sender, MouseEventArgs e)
-		{
-
-		}
-		
-		void RadioButton2MouseDown(object sender, MouseEventArgs e)
-		{
-
-		}
 	}
 }
