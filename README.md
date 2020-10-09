@@ -4,6 +4,8 @@ Take screenshot, copy to clipboard/save/edit quickly
 
 Easily take screenshot.
 
+Supports Windows 10, 8, 7 and older versions.
+
 
 Run the software, select the area to screenshot
 
