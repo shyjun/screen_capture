@@ -1,0 +1,16 @@
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\screen_capture\screen_capture\bin\Debug\screen_capture.exe
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\screen_capture\screen_capture\bin\Debug\screen_capture.pdb
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\screen_capture.MainForm.resources
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\screen_capture.exe
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\screen_capture.pdb
+C:\Documents and Settings\Administrator\My Documents\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\GenerateResource.read.4.tlog
+D:\WORK\SharpDevelop Projects\screen_capture\screen_capture\bin\Debug\screen_capture.exe
+D:\WORK\SharpDevelop Projects\screen_capture\screen_capture\bin\Debug\screen_capture.pdb
+D:\WORK\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\screen_capture.MainForm.resources
+D:\WORK\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\screen_capture.exe
+D:\WORK\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\screen_capture.pdb
+D:\WORK\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\screen_capture.csprojResolveAssemblyReference.cache
+D:\WORK\SharpDevelop Projects\screen_capture\screen_capture\obj\x86\Debug\screen_capture.csproj.GenerateResource.Cache
