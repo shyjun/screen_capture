@@ -1,5 +1,5 @@
 # screen_capture
-Take screenshot, copy to clipboard/save/edit quickly. Best snipping tool.
+Take screenshot, copy to clipboard/save/edit quickly. Best snipping tool. Free, open source.
 
 
 Easily take screenshot.
